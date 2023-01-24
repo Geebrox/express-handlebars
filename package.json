@@ -7,7 +7,15 @@
   "author": "bek <geebrox@gmail.com>",
   "main": "dist/server.js",
   "scripts": {
-    "dev": "ts-node ./src/server.ts"
+    "build:all": "yarn clean && concurrently --kill-others-on-fail \"tsc\" \"yarn build:tailwind\" \"yarn build:views\"",
+    "build:dev": "cross-env NODE_ENV=development yarn build:all",
+    "build:prod": "cross-env NODE_ENV=production yarn build:all",
+    "build:tailwind": "postcss ./src/assets/main.css -o ./dist/public/main.css",
+    "build:views": "copyfiles -u 1 \"./src/views/**/*\" ./dist",
+    "clean": "rimraf ./dist",
+    "dev": "nodemon -w ./src -e hbs,css,ts -x \"yarn build:dev && node ./dist/server.js\"",
+    "prestart": "yarn build:prod",
+    "start": "cross-env NODE_ENV=production node ./dist/server.js"
   },
   "dependencies": {
     "express": "^4.18.2",
@@ -17,7 +25,16 @@
     "@tsconfig/strictest": "^1.0.2",
     "@types/express": "^4.17.16",
     "@types/node": "^18.11.18",
-    "ts-node": "^10.9.1",
+    "autoprefixer": "^10.4.13",
+    "concurrently": "^7.6.0",
+    "copyfiles": "^2.4.1",
+    "cross-env": "^7.0.3",
+    "cssnano": "^5.1.14",
+    "nodemon": "^2.0.20",
+    "postcss": "^8.4.21",
+    "postcss-cli": "^10.1.0",
+    "rimraf": "^4.1.2",
+    "tailwindcss": "^3.2.4",
     "typescript": "^4.9.4"
   }
 }

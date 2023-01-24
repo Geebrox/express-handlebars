@@ -3,6 +3,7 @@ import { engine } from 'express-handlebars';
 import path from 'path';
 
 const viewsDir = path.resolve(__dirname, 'views');
+const publicDir = path.resolve(__dirname, 'public');
 const server = express()
   .engine(
     '.hbs',
@@ -14,7 +15,8 @@ const server = express()
     })
   )
   .set('view engine', '.hbs')
-  .set('views', viewsDir);
+  .set('views', viewsDir)
+  .use(express.static(publicDir));
 
 server.get('/', (_, res) => {
   res.render('home', { title: 'Home' });
