@@ -1,0 +1,9 @@
+{
+  "name": "express-handlebars",
+  "version": "1.0.0",
+  "private": false,
+  "description": "Express.js with handlebars (SSR + CSR)",
+  "license": "MIT",
+  "author": "bek <geebrox@gmail.com>",
+  "main": "dist/server.js"
+}
