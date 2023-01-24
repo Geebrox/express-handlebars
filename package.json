@@ -22,6 +22,7 @@
     "express-handlebars": "^6.0.6"
   },
   "devDependencies": {
+    "@tailwindcss/forms": "^0.5.3",
     "@tsconfig/strictest": "^1.0.2",
     "@types/express": "^4.17.16",
     "@types/node": "^18.11.18",
@@ -34,7 +35,7 @@
     "postcss": "^8.4.21",
     "postcss-cli": "^10.1.0",
     "prettier": "^2.8.3",
-    "prettier-plugin-tailwindcss": "^0.2.1",
+    "prettier-plugin-tailwindcss": "^0.2.2",
     "rimraf": "^4.1.2",
     "tailwindcss": "^3.2.4",
     "typescript": "^4.9.4"
