@@ -8,14 +8,14 @@
   <link rel="stylesheet" type="text/css" href="/main.css" />
 </head>
 
-<body class="flex flex-col h-full bg-slate-200 md:p-8 p-4 bg-gradient-to-r from-slate-100 to-slate-300">
+<body class="flex flex-col h-full bg-slate-200 md:p-8 p-4 bg-gradient-to-r from-slate-100 to-slate-300 space-y-10 !pb-0">
   <nav class="h-16 flex items-center justify-center">
     {{> nav}}
   </nav>
   <main class="flex-1 flex flex-col items-center justify-center">
     {{{body}}}
   </main>
-  <footer class="flex items-center justify-center bg-slate-700 text-white -m-4 md:-m-8 md:p-8 p-4">
+  <footer class="flex items-center justify-center bg-slate-300 text-slate-600 bg-opacity-50 backdrop-blur-xl -m-4 md:-m-8 md:p-8 p-4 shadow-2xl shadow-white">
     {{> footer}}
   </footer>
 </body>

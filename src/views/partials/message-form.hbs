@@ -1,0 +1,39 @@
+<form
+  class='rounded-md bg-slate-100 bg-opacity-20 px-8 pt-6 pb-8 shadow-[0_8px_30px_rgb(0,0,0,0.12)] backdrop-blur-xl'
+  method='post'
+>
+  <div class='mb-4'>
+    <label class='mb-2 block text-sm font-bold text-slate-700' for='username'>
+      Author
+    </label>
+    <input
+      class='focus:shadow-outline w-full appearance-none rounded border py-2 px-3 leading-tight text-slate-700 shadow focus:outline-none'
+      name='author'
+      minlength='3'
+      required='true'
+      type='text'
+      placeholder='John Doe'
+    />
+  </div>
+  <div class='mb-6'>
+    <label class='mb-2 block text-sm font-bold text-slate-700' for='password'>
+      Message
+    </label>
+    <textarea
+      name='message'
+      minlength='3'
+      required='true'
+      rows='5'
+      placeholder='Write something here...'
+      class='focus:shadow-outline mb-3 w-full appearance-none rounded border py-2 px-3 leading-tight text-slate-700 shadow focus:outline-none'
+    ></textarea>
+  </div>
+  <div class='flex items-center justify-between'>
+    <button
+      class='focus:shadow-outline rounded bg-slate-400 py-2 px-4 font-bold text-white hover:bg-slate-500 focus:outline-none'
+      type='submit'
+    >
+      Submit
+    </button>
+  </div>
+</form>
