@@ -1,0 +1,9 @@
+<ul class='flex h-full w-full max-w-7xl items-center divide-x space-x-2 rounded bg-slate-100 p-4 shadow'>
+  {{#if (isActiveRoute activeRoute routes)}}{{/if}}
+  {{#each routes}}
+  <li
+    class='text-slate-600 hover:underline first:pl-0 pl-2 {{#if (isActiveRoute ../activeRoute this)}}font-bold underline{{/if}}'>
+    <a href='{{this.path}}'>{{this.title}}</a>
+  </li>
+  {{/each}}
+</ul>

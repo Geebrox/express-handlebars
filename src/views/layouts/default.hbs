@@ -4,14 +4,20 @@
   <meta charset='UTF-8' />
   <meta http-equiv='X-UA-Compatible' content='IE=edge' />
   <meta name='viewport' content='width=device-width, initial-scale=1.0' />
-  <title>{{title}}</title>
+  <title>{{activeRoute.title}}</title>
   <link rel="stylesheet" type="text/css" href="/main.css" />
 </head>
 
-<body>
-  <nav>{{> header}}</nav>
-  <main>{{{body}}}</main>
-  <footer>{{> footer}}</footer>
+<body class="flex flex-col h-full bg-slate-200 md:p-8 p-4 bg-gradient-to-r from-slate-100 to-slate-300">
+  <nav class="h-16 flex items-center justify-center">
+    {{> nav}}
+  </nav>
+  <main class="flex-1 flex flex-col items-center justify-center">
+    {{{body}}}
+  </main>
+  <footer class="flex items-center justify-center bg-slate-700 text-white -m-4 md:-m-8 md:p-8 p-4">
+    {{> footer}}
+  </footer>
 </body>
 
 </html>
