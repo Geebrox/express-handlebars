@@ -1,6 +1,11 @@
 import express from 'express';
 import { engine } from 'express-handlebars';
 import path from 'path';
+import {
+  addMessage,
+  getMessages,
+  TMessage,
+} from './services/message-board.service';
 
 const VIEW_ROUTES = [
   {
@@ -31,10 +36,7 @@ const server = express()
       partialsDir: path.resolve(viewsDir, 'partials'),
       defaultLayout: 'default',
       helpers: {
-        isActiveRoute: (
-          a: (typeof VIEW_ROUTES)[0],
-          b: (typeof VIEW_ROUTES)[0]
-        ) => {
+        isActiveRoute: <T extends (typeof VIEW_ROUTES)[0]>(a: T, b: T) => {
           return a.path == b.path;
         },
       },
@@ -42,17 +44,34 @@ const server = express()
   )
   .set('view engine', '.hbs')
   .set('views', viewsDir)
-  .use(express.static(publicDir));
+  .use(express.static(publicDir))
+  .use(express.json())
+  .use(express.urlencoded({ extended: true }));
 
-server.use((req, res, next) => {
+server.post('/message-board', (req, res) => {
+  if (req.body && req.body['author'] && req.body['message']) {
+    addMessage(req.body['author'], req.body['message']);
+  }
+
+  res.redirect(req.path);
+});
+
+server.use(async (req, res, next) => {
   const foundViewRoute = VIEW_ROUTES.find((viewRoute) => {
     return viewRoute.path === req.path;
   });
 
+  let messages: TMessage[] = [];
+
   if (foundViewRoute) {
+    if (foundViewRoute.path === '/message-board') {
+      messages = await getMessages();
+    }
+
     res.render(foundViewRoute.view, {
       routes: VIEW_ROUTES,
       activeRoute: foundViewRoute,
+      messages,
     });
     return;
   }

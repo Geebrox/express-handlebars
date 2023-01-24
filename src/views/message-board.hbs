@@ -3,12 +3,8 @@
   {{> message-form}}
   <p class='text-2xl'>Last messages</p>
   <div class='grid grid-cols-2 gap-4'>
-    <div
-      class='rounded-md border border-slate-50 bg-slate-100 bg-opacity-20 p-4 shadow-[0_8px_30px_rgb(0,0,0,0.12)] backdrop-blur-xl'
-    >
-      <p class='text-lg font-medium text-slate-700'>John Doe</p>
-      <p class='text-slate-500'>
-        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Fugiat, quia.</p>
-    </div>
+    {{#each messages}}
+      {{>message message=.}}
+    {{/each}}
   </div>
 </div>
