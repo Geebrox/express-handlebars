@@ -1,1 +1,45 @@
-<h1 class='text-blue-600'>Hello, world!</h1>
+<template id='numberTemplate'>
+  {{> number}}
+</template>
+
+<div class='flex h-full w-full max-w-7xl flex-col space-y-4'>
+  <p class='text-2xl'>Get average number</p>
+  {{> number-form}}
+  <p class='text-2xl'>Last numbers</p>
+  <div class='flex gap-4 p-4 w-full flex-wrap items-center justify-center' id="numbers-container"></div>
+</div>
+
+<script>
+  (() => {
+    const onDocumentReady = (callback) =>
+      document.readyState === 'complete' ||
+        document.readyState === 'interactive'
+        ? setTimeout(callback, 1)
+        : document.addEventListener('DOMContentLoaded', callback);
+
+    onDocumentReady(() => {
+      const numberTemplate = document.getElementById('numberTemplate').content;
+      const numbersContainerElement = document.getElementById('numbers-container');
+
+      const renderNumberTemplate = (numberInfo) => {
+        const numberElement = document.importNode(numberTemplate, true);
+        const lastNumberElement = numberElement.querySelector('.__number__lastNumber__');
+        const prevNumberElement = numberElement.querySelector('.__number__prevNumber__');
+        const avgNumberElement = numberElement.querySelector('.__number__avgNumber__');
+        lastNumberElement.innerHTML = `${numberInfo.lastNumber}`;
+        prevNumberElement.innerHTML = `${numberInfo.prevNumber}`;
+        avgNumberElement.innerHTML = `${numberInfo.avgNumber}`;
+        numbersContainerElement.prepend(numberElement);
+      }
+
+      window.renderNumberTemplate = renderNumberTemplate;
+
+      fetch('/numbers').then((res) => res.json()).then((data) => {
+        if (Array.isArray(data)) {
+          data.forEach(renderNumberTemplate);
+        }
+      });
+    })
+  })()
+
+</script>

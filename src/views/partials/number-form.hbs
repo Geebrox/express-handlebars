@@ -1,0 +1,60 @@
+<form
+  class='space-y-4 rounded-md bg-slate-100 bg-opacity-20 px-8 pt-6 pb-8 shadow-[0_8px_30px_rgb(0,0,0,0.12)] backdrop-blur-xl'
+  id='number-form'>
+  <div>
+    <label class='mb-2 block text-sm font-bold text-slate-700' for='number'>
+      Number
+    </label>
+    <input
+      class='focus:shadow-outline w-full appearance-none rounded border py-2 px-3 leading-tight text-slate-700 shadow focus:outline-none disabled:cursor-not-allowed disabled:bg-slate-200 disabled:outline-none'
+      name='number' id='number' min='0' required='true' type='number' placeholder='Enter a number' />
+  </div>
+  <div class='form-group form-check'>
+    <input type='checkbox'
+      class='form-check-input float-left mt-1 mr-2 h-4 w-4 cursor-pointer appearance-none rounded-sm border border-gray-300 bg-white bg-contain bg-center bg-no-repeat align-top transition duration-200 checked:border-slate-600 checked:bg-slate-600 focus:outline-none disabled:cursor-not-allowed'
+      id='isNegative' />
+    <label class='form-check-label inline-block text-gray-800' for='isNegative'>Negative number</label>
+  </div>
+  <div class='flex items-center justify-between'>
+    <button
+      class='focus:shadow-outline rounded bg-slate-400 py-2 px-4 font-bold text-white hover:bg-slate-500 focus:outline-none disabled:cursor-not-allowed disabled:bg-slate-300'
+      type='submit'>
+      Submit
+    </button>
+  </div>
+</form>
+
+<script>
+  (() => {
+    const numberFormElement = document.getElementById('number-form');
+    const numberInputElement = document.getElementById('number');
+    const isNegativeCheckboxElement = document.getElementById('isNegative');
+
+    numberFormElement.onsubmit = (event) => {
+      event.preventDefault();
+      const number = numberInputElement.value * (isNegativeCheckboxElement.checked ? -1 : 1);
+
+      numberFormElement.setAttribute('disabled', 'true');
+      numberInputElement.setAttribute('disabled', 'true');
+      isNegativeCheckboxElement.setAttribute('disabled', 'true');
+      numberInputElement.value = '';
+      isNegativeCheckboxElement.checked = false;
+
+      fetch('/add-number', {
+        method: 'POST',
+        body: JSON.stringify({ number }),
+        headers: { 'Content-Type': 'application/json' }
+      })
+        .then(res => res.json())
+        .then((data) => {
+          if (data) {
+            window.renderNumberTemplate(data);
+          }
+        }).finally(() => {
+          numberFormElement.removeAttribute('disabled');
+          numberInputElement.removeAttribute('disabled');
+          isNegativeCheckboxElement.removeAttribute('disabled');
+        })
+    }
+  })();
+</script>

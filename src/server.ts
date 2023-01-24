@@ -6,6 +6,7 @@ import {
   getMessages,
   TMessage,
 } from './services/message-board.service';
+import { addNumber, getCalculatedNumbers } from './services/number.service';
 
 const VIEW_ROUTES = [
   {
@@ -46,38 +47,51 @@ const server = express()
   .set('views', viewsDir)
   .use(express.static(publicDir))
   .use(express.json())
-  .use(express.urlencoded({ extended: true }));
-
-server.post('/message-board', (req, res) => {
-  if (req.body && req.body['author'] && req.body['message']) {
-    addMessage(req.body['author'], req.body['message']);
-  }
-
-  res.redirect(req.path);
-});
-
-server.use(async (req, res, next) => {
-  const foundViewRoute = VIEW_ROUTES.find((viewRoute) => {
-    return viewRoute.path === req.path;
-  });
-
-  let messages: TMessage[] = [];
-
-  if (foundViewRoute) {
-    if (foundViewRoute.path === '/message-board') {
-      messages = await getMessages();
+  .use(express.urlencoded({ extended: true }))
+  .post('/message-board', (req, res) => {
+    if (req.body && req.body['author'] && req.body['message']) {
+      addMessage(req.body['author'], req.body['message']);
     }
 
-    res.render(foundViewRoute.view, {
-      routes: VIEW_ROUTES,
-      activeRoute: foundViewRoute,
-      messages,
-    });
-    return;
-  }
+    res.redirect(req.path);
+  })
+  .post('/add-number', async (req, res) => {
+    if (req.body && req.body['number']) {
+      const lastNumber = parseInt(req.body['number'], 10) || 0;
+      const updatedNumbers = await addNumber(lastNumber);
+      const prevNumber = updatedNumbers.at(1) || 0;
+      const avgNumber = (lastNumber + prevNumber) / 2;
 
-  next();
-});
+      res.send({ lastNumber, prevNumber, avgNumber });
+    }
+  })
+  .get('/numbers', async (_, res) => {
+    const calculatedNumbers = await getCalculatedNumbers();
+
+    res.send(calculatedNumbers);
+  })
+  .use(async (req, res, next) => {
+    const foundViewRoute = VIEW_ROUTES.find((viewRoute) => {
+      return viewRoute.path === req.path;
+    });
+
+    let messages: TMessage[] = [];
+
+    if (foundViewRoute) {
+      if (foundViewRoute.path === '/message-board') {
+        messages = await getMessages();
+      }
+
+      res.render(foundViewRoute.view, {
+        routes: VIEW_ROUTES,
+        activeRoute: foundViewRoute,
+        messages,
+      });
+      return;
+    }
+
+    next();
+  });
 
 server.listen(3000, () => {
   console.log('🚀 Server has been started: http://localhost:3000');
